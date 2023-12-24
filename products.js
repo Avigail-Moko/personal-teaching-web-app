@@ -1,20 +1,19 @@
-const express = require("express");
-const router = express.Router();
-const checkAuth = require("../middlewares/checkAuth");
-const upload = require("../middlewares/upload").default;
-const {
-  createProduct,
-  getProduct,
-  deleteProduct,
-  updateProduct,
-} = require("../controllers/products");
+const mongoose = require('mongoose');
 
-router.post("/createProduct", upload.single("image"), createProduct);
 
-router.get("/getProduct", getProduct);
+const productSchema= mongoose.Schema({
+_id:mongoose.Schema.Types.ObjectId,
+lesson_title:String,
+category: String,
+price: Number,
+length: Number,
+description: String,
+userId: String,
+image: {
+    filename: String,
+    path: String,
+    // ייתכן שתרצי להוסיף גם את שאר המידע שמחזיק multer על הקובץ, כמו size וכו'
+}
+})
 
-router.delete("/deleteProduct", deleteProduct);
-
-router.patch("/updateProduct", upload.single("image"), updateProduct);
-
-module.exports = router;
+module.exports=mongoose.model('Product', productSchema);
